@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Maui.AppInstaller.ViewModel"
+             x:Class="Maui.AppInstaller.MainPage"
+             x:DataType="viewModels:MainPageViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Button Text="Download"
+                    Command="{Binding DownloadCommand}" CommandParameter="Daniel"/>
+            <Button Text="Cancel"
+                    Command="{Binding CancelCommand}" CommandParameter="Daniel"/>
+            <ProgressBar Progress="{Binding Progress}"/>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding DownloadProgress}"/>
+                        <Span Text=" %"/>
+                        <Span Text=" - "/>
+                        <Span Text="{Binding DownloadingFileName}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
