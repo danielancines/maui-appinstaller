@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Win32;
+using System.ComponentModel;
 using System.IO.Compression;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -129,7 +130,9 @@ public class MainPageViewModel : INotifyPropertyChanged
 
 
         this._cancellationTokenSource = new CancellationTokenSource();
-        await this.DownloadFile("https://ancines-myapp.s3.amazonaws.com/production/v1.0.0.zip", string.Empty, this._cancellationTokenSource.Token);
+        //await this.DownloadFile("https://ancines-myapp.s3.amazonaws.com/production/v1.0.0.zip", string.Empty, this._cancellationTokenSource.Token);
+
+        this.WriteOnRegistry();
 
 
         //foreach (var task in filesToDownload)
@@ -145,6 +148,32 @@ public class MainPageViewModel : INotifyPropertyChanged
         //{
         //    _ = this.DownloadFile(file.DownloadUri, file.FileName);
         //});
+    }
+
+    private void WriteOnRegistry()
+    {
+        var softwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+
+        string registryKeyPath = @"MyAppInstaller";
+        string valueName = "AppFullPath";
+
+        // Define the value to write to the registry
+        string valueData = "C:\\Users\\danie\\Downloads\\v1.0.0\\Maui.AppInstaller1.exe";
+
+        try
+        {
+            // Open the registry key for writing
+            using (var registryKey = softwareKey.CreateSubKey(registryKeyPath))
+            {
+                // Write the value to the registry
+                registryKey.SetValue(valueName, valueData);
+                Console.WriteLine("Value successfully written to the registry.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error writing to the registry: {ex.Message}");
+        }
     }
 
     private long _totalFileSize, _totalBytesRead;
